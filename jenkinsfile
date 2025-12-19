@@ -6,7 +6,7 @@ pipeline {
         stage('checkout') {
             steps {
                 sh "ls -l"
-                sh "ssh-keyscan -t rsa  github.com >> /var/jenkins_home/.ssh/known_hosts"
+                sh "ssh-keyscan -t rsa  github.com >> /var/jenkins_home/.ssh/known_hosts" || true
             }
         }
         stage('Build') {
