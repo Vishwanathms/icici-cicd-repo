@@ -20,8 +20,8 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing...'
-                mvn test 
-                //mvn verify
+                sh "mvn test" 
+                sh "mvn verify"
                 // Add test steps here
             }
         }
