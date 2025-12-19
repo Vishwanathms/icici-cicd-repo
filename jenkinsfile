@@ -26,7 +26,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying...'
-                sh "cp target/mvn-hello-world.war /home/ubuntu/war_fold/mvn-hello-world.war"
+                sh "sudo cp target/mvn-hello-world.war /home/ubuntu/war_fold/mvn-hello-world.war"
                 // Add deploy steps here
             }
         }
