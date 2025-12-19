@@ -1,0 +1,62 @@
+pipeline {
+  agent any
+
+  tools {
+    jdk 'JDK11'
+    maven 'Maven3'
+  }
+
+  environment {
+    TOMCAT_CONTAINER = 'tomcat01'
+    APP_CONTEXT = 'mvn-hello-world'
+    GRID_URL = 'http://157.119.43.98:4444'
+    BASE_URL = 'http://157.119.43.98:9091/mvn-hello-world'
+  }
+
+  stages {
+
+    stage('Build + Unit Tests (Continuous Testing)') {
+      steps {
+        sh 'mvn clean test'
+      }
+      post {
+        always {
+          junit '**/target/surefire-reports/*.xml'
+        }
+      }
+    }
+
+    stage('Package WAR') {
+      steps {
+        sh 'mvn package -DskipTests=true'
+      }
+      post {
+        success {
+          archiveArtifacts 'target/*.war'
+        }
+      }
+    }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying...'
+                sh "sudo cp target/mvn-hello-world.war /home/ubuntu/war_fold/mvn-hello-world.war"
+                sh "sudo cp -r target/mvn-hello-world  /home/ubuntu/war_fold/"
+                // Add deploy steps here
+            }
+        }
+        stage('UI Tests (Selenium WebDriver)') {
+        steps {
+            sh '''
+            mvn verify \
+                -Dgrid.url=${GRID_URL} \
+                -Dbase.url=${BASE_URL}
+            '''
+        }
+        post {
+            always {
+            junit '**/target/failsafe-reports/*.xml'
+            }
+        }
+        }
+    }
+}
