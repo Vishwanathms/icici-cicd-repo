@@ -1,5 +1,6 @@
 pipeline {
     agent { label 'java' }
+    tools { maven 'maven-3.9.8' }
 
     stages {
         stage('checkout') {
@@ -11,6 +12,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building...' 
+                sh "mvn clean package -DskipTests"
                 // Add build steps here
             }
         }
