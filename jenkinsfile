@@ -20,6 +20,8 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing...'
+                mvn test 
+                mvn verify
                 // Add test steps here
             }
         }
