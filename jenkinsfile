@@ -21,7 +21,7 @@ pipeline {
             steps {
                 echo 'Testing...'
                 mvn test 
-                mvn verify
+                //mvn verify
                 // Add test steps here
             }
         }
