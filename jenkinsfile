@@ -13,6 +13,7 @@ pipeline {
             steps {
                 echo 'Building...' 
                 sh "mvn clean package -DskipTests"
+
                 // Add build steps here
             }
         }
@@ -25,6 +26,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying...'
+                sh "cp target/mvn-hello-world.war /home/ubuntu/war_fold/mvn-hello-world.war"
                 // Add deploy steps here
             }
         }
