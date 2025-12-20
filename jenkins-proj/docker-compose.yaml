@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins-master
+    restart: unless-stopped
+
+    ports:
+      - "9080:8080"
+      - "50000:50000"
+
+    volumes:
+      - /home/ubuntu/jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+
+    deploy:
+      resources:
+        limits:
+          cpus: "4.0"
+          memory: 6g
+
+  tomcat:
+    image: tomcat:9.0-jdk11
+    container_name: tomcat-app
+    ports:
+      - "9090:8080"
+    volumes:
+      - /home/ubuntu/war_fold/:/usr/local/tomcat/webapps/
+    restart: unless-stopped
+
